@@ -3,7 +3,8 @@ import {
   getAuth ,
   signInWithRedirect,
   signInWithPopup,
-  GoogleAuthProvider
+  GoogleAuthProvider, 
+  createUserWithEmailAndPassword
 } from 'firebase/auth';
 import{
   getFirestore,
@@ -11,7 +12,6 @@ import{
   getDoc,
   setDoc
 } from 'firebase/firestore';
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyBOchfmEYSq7t_0pLl_fL3tqvO-KIrLuRI",
@@ -25,19 +25,27 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig); 
 
-const provider = new GoogleAuthProvider(); //the class from firebase authenthication
+const googleProvider = new GoogleAuthProvider(); //class from firebase authenthication
 
 //force customer to select account when interact with provider
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
   prompt: "select_account"
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopUp = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopUp = () => 
+  signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () => 
+  signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 
-export const createUserDcouemntFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (
+  userAuth, 
+  additionalInformation = {}
+) => {
+  if(!userAuth) return;
+
   const userDocRef = doc(db, 'users', userAuth.uid);
 
   const userSnapShot = await getDoc(userDocRef);
@@ -53,7 +61,8 @@ export const createUserDcouemntFromAuth = async (userAuth) => {
       await setDoc(userDocRef, {
         displayName,
         email,
-        createAt
+        createAt,
+        ...additionalInformation
       })
     }
     catch(error){
@@ -62,3 +71,9 @@ export const createUserDcouemntFromAuth = async (userAuth) => {
   }
   return userDocRef;
 };
+
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if(!email && !password) return;
+
+  return await createUserWithEmailAndPassword(auth, email, password)
+}
