@@ -1,18 +1,18 @@
 import { initializeApp } from 'firebase/app';
-import { 
-  getAuth ,
-  signInWithRedirect,
-  signInWithPopup,
-  GoogleAuthProvider, 
+import {
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
+  signInWithPopup,
+  signInWithRedirect,
+  signOut
 } from 'firebase/auth';
-import{
-  getFirestore,
+import {
   doc,
   getDoc,
+  getFirestore,
   setDoc
 } from 'firebase/firestore';
 
@@ -26,7 +26,7 @@ const firebaseConfig = {
   measurementId: "G-19VPH5LHJ8"
 };
 
-const firebaseApp = initializeApp(firebaseConfig); 
+const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider(); //class from firebase authenthication
 
@@ -36,15 +36,15 @@ googleProvider.setCustomParameters({
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopUp = () => 
+export const signInWithGooglePopUp = () =>
   signInWithPopup(auth, googleProvider);
-export const signInWithGoogleRedirect = () => 
+export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 
 export const createUserDocumentFromAuth = async (
-  userAuth, 
+  userAuth,
   additionalInformation = {}
 ) => {
   if(!userAuth) return;
@@ -54,7 +54,7 @@ export const createUserDocumentFromAuth = async (
   const userSnapShot = await getDoc(userDocRef);
   console.log(userSnapShot);
   console.log(userSnapShot.exists());
-  
+
   //check if the snapshot user doesn't exits
   if(!userSnapShot.exists()){
     const {displayName, email} = userAuth;
@@ -76,7 +76,7 @@ export const createUserDocumentFromAuth = async (
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
-  if(!email && !password) return; 
+  if(!email && !password) return;
 
   return await createUserWithEmailAndPassword(auth, email, password)
 }
@@ -87,5 +87,5 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 }
 export const signOutUser = () => signOut(auth);
 
-export const onAuthStateChangedListener = (callback) => 
-  onAuthStateChanged(auth, callback,errorCallback,completedCallback);
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);

@@ -5,6 +5,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import { UserProvider } from './contexts/user.contexts';
+import { ProductProvider } from './contexts/product.contexts';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
