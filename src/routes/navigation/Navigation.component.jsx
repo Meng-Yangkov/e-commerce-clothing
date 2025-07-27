@@ -1,9 +1,11 @@
 import {Outlet ,Link, Await} from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
-import {ReactComponent as Logo} from '../../assets/crown.svg';
+import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { useContext } from "react";
 import { UserContext } from "../../contexts/user.contexts";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
+import CartIcon from "../../components/cart-icon/cart-icon.component";
+import CartDropDown from "../../components/cart-dropdown/cart-dropdown.component";
 import './navigation.style.scss'
 
 const Navigation = () => {
@@ -29,7 +31,9 @@ const Navigation = () => {
                 Sign In
               </Link>)
           }  
+          <CartIcon />
         </div>
+        <CartDropDown />
       </div>
       <Outlet/>
     </Fragment>
