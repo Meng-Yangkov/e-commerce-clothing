@@ -3,14 +3,16 @@ import { Fragment } from "react/jsx-runtime";
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { useContext } from "react";
 import { UserContext } from "../../contexts/user.contexts";
+import { CartContext } from "../../contexts/cart.contexts";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropDown from "../../components/cart-dropdown/cart-dropdown.component";
 import './navigation.style.scss'
 
 const Navigation = () => {
-  const {currentUser} = useContext(UserContext);
-
+  const { currentUser } = useContext(UserContext);
+  const { isCartOpen } = useContext(CartContext);
+  
   return(
     <Fragment>
       <div className="navigation">
@@ -33,7 +35,7 @@ const Navigation = () => {
           }  
           <CartIcon />
         </div>
-        <CartDropDown />
+        {isCartOpen && <CartDropDown />}
       </div>
       <Outlet/>
     </Fragment>
