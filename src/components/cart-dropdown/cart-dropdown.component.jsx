@@ -16,4 +16,4 @@ const CartDropDown = () => {
   )
 }
 
-export default CartDropDown;    
+export default CartDropDown;
